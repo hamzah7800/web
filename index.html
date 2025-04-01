@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Game Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #fff;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .game {
+            border: 1px solid #fff;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .search-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Welcome to the Fun Game Website!</h1>
+
+<div class="search-container">
+    <input type="text" id="searchQuery" placeholder="Search for games...">
+    <button onclick="searchGame()">Search</button>
+</div>
+
+<div class="game">
+    <h2>Minecraft</h2>
+    <img src="" alt="" onerror="this.onerror=null; this.src='fallback-image.jpg';">
+    <p>Explore a blocky world, build anything you can imagine, and survive against monsters!</p>
+    <a href="https://eagler.drippypop.rocks/eagler-files/modded/1.8/EaglyMC/index.html" target="_blank">Play Minecraft</a>
+</div>
+
+<div class="game">
+    <h2>Pizza Edition</h2>
+    <img src="" alt="" onerror="this.onerror=null; this.src='fallback-image.jpg';">
+    <p>Become a Master Gamer with Endless Choices of Game!</p>
+    <a href="https://pizzaedition.global.ssl.fastly.net" target="_blank">Play Pizza Edition</a>
+</div>
+
+<div class="game">
+    <h2>Call of Duty: Warzone</h2>
+    <img src="" alt="" onerror="this.onerror=null; this.src='fallback-image.jpg';">
+    <p>Join the battle in this thrilling FPS game and fight for survival!</p>
+    <a href="https://www.callofduty.com/warzone" target="_blank">Play Warzone</a>
+</div>
+
+<div class="game">
+    <h2>Typing Game</h2>
+    <img src="" alt="" onerror="this.onerror=null; this.src='fallback-image.jpg';">
+    <p>Test your typing skill with this game!</p>
+    <a href="https://zty.pe/?scrlybrkr=def594b1" target="_blank">Play typing game</a>
+</div>
+
+<div class="game">
+    <h2>Parkour</h2>
+    <img src="parkour.jpg" alt="Parkour Challenge" onerror="this.onerror=null; this.src='fallback-image.jpg';">
+    <p>Test your skills in this exciting parkour game and jump your way to victory!</p>
+    <a href="https://parkourchallenge.com" target="_blank">Play Parkour Challenge</a>
+</div>
+
+<script>
+    function searchGame() {
+        const query = document.getElementById('searchQuery').value;
+        const searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+        window.open(searchUrl, '_blank');
+    }
+
+    window.onload = function() {
+        const images = document.querySelectorAll('img');
+        images.forEach(img => {
+            img.onerror = function() {
+                this.src = 'fallback-image.jpg';
+                console.error('Image failed to load:', this.alt);
+            };
+        });
+    };
+</script>
+
+</body>
+</html>
