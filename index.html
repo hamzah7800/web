@@ -319,7 +319,7 @@
     // Search functionality using DuckDuckGo with safe search off (kp=-2)
     function searchGame() {
       const query = document.getElementById('searchQuery').value;
-      const searchUrl = `https://bing.com=${encodeURIComponent(query)}&kp=-2`;
+      const searchUrl = `https://bing.com=${encodeURIComponent(query)}`;
       window.open(searchUrl, '_blank');
     }
 
