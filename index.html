@@ -1,126 +1,396 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fun Game Website</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #ff7e5f, #feb47b);
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            color: #fff;
-            text-align: center;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        .game {
-            border: 1px solid #fff;
-            border-radius: 5px;
-            padding: 10px;
-            margin: 10px 0;
-            background-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-        .search-container {
-            text-align: center;
-            margin: 20px 0;
-        }
-        input[type="text"] {
-            padding: 10px;
-            width: 300px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            background-color: #fff;
-            cursor: pointer;
-        }
-        .tiktok-embed {
-            margin: 20px auto;
-            text-align: center;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fun Game Website</title>
+  <meta name="description" content="A fun game website featuring multiple games, reviews, leaderboards, and community features.">
+  <!-- Content Security Policy: Upgrades insecure requests and whitelists trusted domains -->
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; default-src 'self' https://www.tiktok.com https://discord.com https://bing.com; script-src 'self' 'unsafe-inline' https://www.tiktok.com https://discord.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; frame-src 'self' https://www.tiktok.com https://discord.com;">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Reset & Base */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; transition: background-color 0.3s, color 0.3s; }
+    /* Light & Dark Modes */
+    body.light-mode { background: linear-gradient(to right, #ff7e5f, #feb47b); color: #333; }
+    body.dark-mode { background: #1e1e1e; color: #ddd; }
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: rgba(0,0,0,0.7);
+      color: #fff;
+    }
+    .navbar a { color: #fff; text-decoration: none; margin: 0 10px; }
+    .nav-links { display: flex; align-items: center; }
+    .dark-mode-toggle { cursor: pointer; background: none; border: none; color: #fff; font-size: 1.2em; margin-right: 10px; }
+    /* Search Bar */
+    .search-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .search-container input[type="text"] {
+      padding: 10px;
+      width: 300px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .search-container button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .search-container button:hover { background-color: #ddd; }
+    /* Categories */
+    .categories {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .categories button {
+      padding: 8px 12px;
+      margin: 0 5px;
+      border: none;
+      border-radius: 5px;
+      background-color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .categories button:hover { background-color: #ddd; }
+    /* Game Grid Layout */
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 0 20px;
+    }
+    .game-card {
+      background-color: rgba(255,255,255,0.8);
+      border-radius: 5px;
+      padding: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    .game-card img {
+      width: 100%;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    .game-card h2 { margin-bottom: 10px; }
+    .game-card p { margin-bottom: 10px; }
+    .game-card a {
+      display: inline-block;
+      padding: 8px 12px;
+      background-color: #ff7e5f;
+      color: #fff;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+    .game-card a:hover { background-color: #feb47b; }
+    /* Rating Stars */
+    .rating { color: gold; margin-bottom: 10px; }
+    /* Leaderboard */
+    .leaderboard {
+      margin: 30px 20px;
+      background-color: rgba(255,255,255,0.9);
+      padding: 15px;
+      border-radius: 5px;
+    }
+    .leaderboard h2 { margin-bottom: 10px; }
+    .leaderboard ul { list-style: none; padding: 0; }
+    .leaderboard li {
+      padding: 5px 0;
+      border-bottom: 1px solid #ccc;
+    }
+    /* Sign Up Section */
+    #signup {
+      margin: 20px;
+      padding: 20px;
+      background-color: rgba(255,255,255,0.95);
+      border-radius: 5px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #signup h2 { text-align: center; margin-bottom: 15px; }
+    #signup form input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    #signup form button {
+      width: 100%;
+      padding: 10px;
+      background-color: #ff7e5f;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      margin-top: 30px;
+      background-color: rgba(0,0,0,0.7);
+      color: #fff;
+    }
+  </style>
 </head>
-<body>
+<body class="light-mode">
+  <!-- Navbar with Navigation & Dark Mode Toggle -->
+  <div class="navbar">
+    <div class="logo">
+      <a href="#">FunGame</a>
+    </div>
+    <div class="nav-links">
+      <a href="#games">Games</a>
+      <a href="#leaderboard">Leaderboard</a>
+      <a href="#about">About</a>
+      <a href="#signup">Sign Up</a>
+      <button class="dark-mode-toggle" onclick="toggleDarkMode()"><i class="fas fa-moon"></i></button>
+    </div>
+  </div>
 
-<h1>Welcome to the Fun Game Website!</h1>
-
-<div class="search-container">
-    <input type="text" id="searchQuery" placeholder="Search for games...">
+  <!-- Search Bar & Categories for Filtering -->
+  <div class="search-container">
+    <input type="text" id="searchQuery" placeholder="Search Games">
     <button onclick="searchGame()">Search</button>
-</div>
+  </div>
+  <div class="categories">
+    <button onclick="filterGames('all')">All</button>
+    <button onclick="filterGames('action')">Action</button>
+    <button onclick="filterGames('puzzle')">Puzzle</button>
+    <button onclick="filterGames('multiplayer')">Multiplayer</button>
+  </div>
 
-<div class="game">
-    <h2>Minecraft</h2>
-    <img src="" alt="" onerror="this.onerror=null; this.src='fallback-image.jpg';">
-    <p>Explore a blocky world, build anything you can imagine, and survive against monsters!</p>
-    <a href="https://eagler.drippypop.rocks/eagler-files/modded/1.8/EaglyMC/index.html" target="_blank">Play Minecraft</a>
-</div>
+  <!-- Daily Game Suggestion -->
+  <section id="daily-suggestion" style="text-align:center; margin: 20px;">
+    <h2>Daily Game Suggestion</h2>
+    <p id="dailyGame">Check back tomorrow for a new suggestion!</p>
+  </section>
 
-<div class="game">
-    <h2>Pizza Edition</h2>
-    <img src="" alt="" onerror="this.onerror=null; this.src='fallback-image.jpg';">
-    <p>Become a Master Gamer with Endless Choices of Game!</p>
-    <a href="https://pizzaedition.global.ssl.fastly.net" target="_blank">Play Pizza Edition</a>
-</div>
+  <!-- Game Cards Grid -->
+  <section id="games" class="game-grid">
+    <!-- Minecraft -->
+    <div class="game-card" data-category="multiplayer">
+      <h2>Minecraft</h2>
+      <img src="minecraft.webp" alt="Minecraft" loading="lazy" onerror="this.onerror=null; this.src='fallback-image.jpg';">
+      <div class="rating">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star-half-alt"></i>
+        <i class="far fa-star"></i>
+      </div>
+      <p>Explore a blocky world, build anything you can imagine, and survive against monsters!</p>
+      <a href="https://eagler.drippypop.rocks/eagler-files/modded/1.8/EaglyMC/index.html" target="_blank">Play Minecraft</a>
+    </div>
+    <!-- Pizza Edition -->
+    <div class="game-card" data-category="action">
+      <h2>Pizza Edition</h2>
+      <img src="pizzaedition.webp" alt="Pizza Edition" loading="lazy" onerror="this.onerror=null; this.src='fallback-image.jpg';">
+      <div class="rating">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="far fa-star"></i>
+      </div>
+      <p>Become a Master Gamer with endless game choices!</p>
+      <a href="https://pizzaedition.global.ssl.fastly.net" target="_blank">Play Pizza Edition</a>
+    </div>
+    <!-- Call of Duty: Warzone -->
+    <div class="game-card" data-category="action">
+      <h2>Call of Duty: Warzone</h2>
+      <img src="warzone.webp" alt="Warzone" loading="lazy" onerror="this.onerror=null; this.src='fallback-image.jpg';">
+      <div class="rating">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+      </div>
+      <p>Join the battle in this thrilling FPS game and fight for survival!</p>
+      <a href="https://www.callofduty.com/warzone" target="_blank">Play Warzone</a>
+    </div>
+    <!-- Typing Game -->
+    <div class="game-card" data-category="puzzle">
+      <h2>Typing Game</h2>
+      <img src="typinggame.webp" alt="Typing Game" loading="lazy" onerror="this.onerror=null; this.src='fallback-image.jpg';">
+      <div class="rating">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star-half-alt"></i>
+        <i class="far fa-star"></i>
+      </div>
+      <p>Test your typing skills!</p>
+      <a href="https://zty.pe/?scrlybrkr=def594b1" target="_blank">Play Typing Game</a>
+    </div>
+    <!-- Parkour Challenge -->
+    <div class="game-card" data-category="multiplayer">
+      <h2>Parkour Challenge</h2>
+      <img src="parkour.webp" alt="Parkour Challenge" loading="lazy" onerror="this.onerror=null; this.src='fallback-image.jpg';">
+      <div class="rating">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star-half-alt"></i>
+        <i class="far fa-star"></i>
+      </div>
+      <p>Test your skills in this exciting parkour game and jump your way to victory!</p>
+      <a href="https://parkourchallenge.com" target="_blank">Play Parkour Challenge</a>
+    </div>
+  </section>
 
-<div class="game">
-    <h2>Call of Duty: Warzone</h2>
-    <img src="" alt="" onerror="this.onerror=null; this.src='fallback-image.jpg';">
-    <p>Join the battle in this thrilling FPS game and fight for survival!</p>
-    <a href="https://www.callofduty.com/warzone" target="_blank">Play Warzone</a>
-</div>
+  <!-- Multiplayer Lobby Placeholder -->
+  <section id="multiplayer" style="text-align:center; margin:20px;">
+    <h2>Multiplayer Lobbies</h2>
+    <p>Join a lobby to play with others! (Coming Soon)</p>
+  </section>
 
-<div class="game">
-    <h2>Typing Game</h2>
-    <img src="" alt="" onerror="this.onerror=null; this.src='fallback-image.jpg';">
-    <p>Test your typing skill with this game!</p>
-    <a href="https://zty.pe/?scrlybrkr=def594b1" target="_blank">Play typing game</a>
-</div>
+  <!-- Leaderboard Section (Dynamic) -->
+  <section id="leaderboard" class="leaderboard">
+    <h2>Leaderboard</h2>
+    <ul id="leaderboardList"></ul>
+    <!-- Score Submission Form for logged-in users -->
+    <div id="scoreSection" style="margin-top:15px; display:none;">
+      <h3>Submit Your Score</h3>
+      <form id="scoreForm">
+        <input type="number" id="userScore" placeholder="Enter Score" required>
+        <button type="submit">Submit Score</button>
+      </form>
+    </div>
+  </section>
 
-<div class="game">
-    <h2>Parkour</h2>
-    <img src="parkour.jpg" alt="Parkour Challenge" onerror="this.onerror=null; this.src='fallback-image.jpg';">
-    <p>Test your skills in this exciting parkour game and jump your way to victory!</p>
-    <a href="https://parkourchallenge.com" target="_blank">Play Parkour Challenge</a>
-</div>
+  <!-- Sign Up Section -->
+  <section id="signup">
+    <h2>Sign Up</h2>
+    <form id="signupForm">
+      <input type="text" id="signupUsername" placeholder="Username" required>
+      <input type="password" id="signupPassword" placeholder="Password" required>
+      <button type="submit">Sign Up</button>
+    </form>
+  </section>
 
-<div class="tiktok-embed">
-    <h2>Check Out This TikTok!</h2>
-    <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@example/video/1234567890" data-video-id="1234567890">
-        <section>Check out this awesome video!</section>
-    </blockquote>
-    <script async src="https://www.tiktok.com/embed.js"></script>
-</div>
+  <!-- About Section -->
+  <section id="about" style="margin:20px; text-align:center;">
+    <h2>About FunGame</h2>
+    <p>Your one-stop destination for the best online games, reviews, and community features.</p>
+  </section>
 
-<script>
+  <!-- Social Media: TikTok & Discord -->
+  <section id="social" style="text-align:center; margin:20px;">
+    <h2>Social Media</h2>
+    <div class="tiktok-embed" style="margin-bottom:20px;">
+      <blockquote cite="https://www.tiktok.com/@example/video/1234567890" data-video-id="1234567890">
+        <section>Check out this awesome TikTok video!</section>
+      </blockquote>
+      <script async src="https://www.tiktok.com/embed.js"></script>
+    </div>
+    <div class="discord-embed">
+      <iframe src="https://discord.com/widget?id=YOUR_SERVER_ID&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 FunGame. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Toggle dark/light mode
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      document.body.classList.toggle('light-mode');
+    }
+    
+    // Search functionality using Bing
     function searchGame() {
-        const query = document.getElementById('searchQuery').value;
-        const searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
-        window.open(searchUrl, '_blank');
+      const query = document.getElementById('searchQuery').value;
+      const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
+      window.open(searchUrl, '_blank');
     }
 
-    window.onload = function() {
-        const images = document.querySelectorAll('img');
-        images.forEach(img => {
-            img.onerror = function() {
-                this.src = 'fallback-image.jpg';
-                console.error('Image failed to load:', this.alt);
-            };
-        });
-    };
-</script>
+    // Filter game cards by category
+    function filterGames(category) {
+      const games = document.querySelectorAll('.game-card');
+      games.forEach(game => {
+        game.style.display = (category === 'all' || game.getAttribute('data-category') === category) ? 'block' : 'none';
+      });
+    }
 
+    // Daily game suggestion (random)
+    const gamesSuggestions = ['Minecraft', 'Pizza Edition', 'Call of Duty: Warzone', 'Typing Game', 'Parkour Challenge'];
+    document.getElementById('dailyGame').innerText = gamesSuggestions[Math.floor(Math.random() * gamesSuggestions.length)];
+
+    // Sign Up form - any username and password accepted
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('signupUsername').value;
+      // For simplicity, we ignore password validation.
+      localStorage.setItem('currentUser', username);
+      alert(`Sign up successful! Welcome, ${username}`);
+      // Show the score submission section on the leaderboard.
+      document.getElementById('scoreSection').style.display = 'block';
+      // Optionally, clear the sign up form.
+      this.reset();
+    });
+
+    // Leaderboard functionality using localStorage
+    function loadLeaderboard() {
+      let leaderboard = JSON.parse(localStorage.getItem('leaderboard'));
+      if (!leaderboard) {
+        leaderboard = [
+          { username: "Player1", score: 1500 },
+          { username: "Player2", score: 1300 },
+          { username: "Player3", score: 1200 }
+        ];
+        localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+      }
+      const list = document.getElementById('leaderboardList');
+      list.innerHTML = "";
+      leaderboard.sort((a, b) => b.score - a.score);
+      leaderboard.forEach(entry => {
+        const li = document.createElement('li');
+        li.innerText = `${entry.username} - ${entry.score} points`;
+        list.appendChild(li);
+      });
+    }
+
+    // Score submission for current user
+    document.getElementById('scoreForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const score = parseInt(document.getElementById('userScore').value, 10);
+      const currentUser = localStorage.getItem('currentUser');
+      if (!currentUser) {
+        alert("Please sign up first.");
+        return;
+      }
+      let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+      // Add new score (for simplicity, we append even if the user exists)
+      leaderboard.push({ username: currentUser, score: score });
+      localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+      loadLeaderboard();
+      this.reset();
+    });
+
+    // Initialize leaderboard on page load
+    loadLeaderboard();
+    // If a user is already signed up, display the score form.
+    if (localStorage.getItem('currentUser')) {
+      document.getElementById('scoreSection').style.display = 'block';
+    }
+  </script>
 </body>
 </html>
