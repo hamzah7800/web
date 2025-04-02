@@ -316,10 +316,10 @@
       document.body.classList.toggle('light-mode');
     }
     
-    // Search functionality using DuckDuckGo with safe search off (kp=-2)
+    // Corrected search functionality using DuckDuckGo with safe search off (kp=-2)
     function searchGame() {
       const query = document.getElementById('searchQuery').value;
-      const searchUrl = `https://bing.com=${encodeURIComponent(query)}`;
+      const searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}&kp=-2`;
       window.open(searchUrl, '_blank');
     }
 
